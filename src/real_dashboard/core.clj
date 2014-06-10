@@ -10,6 +10,16 @@
 
 (def clients (atom {}))
 
+(defstruct msgbuff :msg :count)
+
+(def msg_handler (agent (struct msgbuff "" 0)))
+
+; append message, increment count
+(defn send_message[c msg] 
+  {:msg (str (:msg c) msg) :count (inc (:count c))}
+)
+
+
 (defn ws [req]
   (with-channel req con 
     (swap! clients assoc con true)
@@ -21,8 +31,9 @@
 (future (loop []
           (doseq [client @clients]
             (println "sending message to client...")
+            (send msg_handler send_message "happiness")
             (send! (key client) (generate-string
-                                  {:happiness (rand 10)})
+                                  {:happiness (:count @msg_handler)})
                    false))
           (Thread/sleep 5000)
           (recur)))
@@ -39,4 +50,6 @@
   (let [port (Integer/parseInt
                (or (System/getenv "PORT") "8080"))]
     (run-server application {:port port :join? false})))
+
+
 
