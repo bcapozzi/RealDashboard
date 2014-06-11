@@ -8,6 +8,10 @@
                  [http-kit "2.0.0"]
                  [ring/ring-devel "1.1.8"]
                  [compojure "1.1.5"]
-                 [ring-cors "0.1.0"]]
+                 [ring-cors "0.1.0"]
+                 [org.clojure/core.async "0.1.256.0-1bf8cf-alpha"]
+                 [http.async.client "0.5.2"]
+                 [twitter-streaming-client "0.3.1"]
+                 [twitter-api "0.7.5"]]
   
   :main real-dashboard.core )

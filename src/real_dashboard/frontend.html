@@ -15,7 +15,19 @@
 	}
 		
 	function refreshChart() {
-		new Chartkick.LineChart("chart", zip([timestamps,data]));
+	
+		// compute the "change in count" between each update
+		var ts = [];
+		var dd = [];
+		
+		for (var i=0; i<data.length-1; i++) {
+			ts.push(timestamps[i+1]);
+			
+			var delta = data[i+1]-data[i];
+			dd.push(delta);	
+		}
+		//new Chartkick.LineChart("chart", zip([timestamps,data]));
+		new Chartkick.LineChart("chart", zip([ts,dd]));
 	}
 		
 	function zip(arrays) {

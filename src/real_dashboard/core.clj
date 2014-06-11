@@ -6,19 +6,10 @@
   (:require [compojure.route :as route] 
             [compojure.handler :as handler]
             [ring.middleware.reload :as reload]
-            [cheshire.core :refer :all]))
+            [cheshire.core :refer :all]
+            [real-dashboard.tweets :refer :all]))
 
 (def clients (atom {}))
-
-(defstruct msgbuff :msg :count)
-
-(def msg_handler (agent (struct msgbuff "" 0)))
-
-; append message, increment count
-(defn send_message[c msg] 
-  {:msg (str (:msg c) msg) :count (inc (:count c))}
-)
-
 
 (defn ws [req]
   (with-channel req con 
@@ -28,10 +19,13 @@
                     (swap! clients dissoc con)
                     (println con " disconnected. status: " status)))))
 
+;; TODO:  weird reference to msg_handler "global" here ...
+;; must be a better way to somehow PASS in something to the twitter side of things
+
 (future (loop []
           (doseq [client @clients]
             (println "sending message to client...")
-            (send msg_handler send_message "happiness")
+            ;(send msg_handler send_message "happiness")
             (send! (key client) (generate-string
                                   {:happiness (:count @msg_handler)})
                    false))
@@ -50,6 +44,17 @@
   (let [port (Integer/parseInt
                (or (System/getenv "PORT") "8080"))]
     (run-server application {:port port :join? false})))
+
+;(statuses-filter :params {:track "miamiheat, miami heat"}
+;                 :oauth-creds my-creds
+;                 :callbacks *custom-streaming-callback*)
+
+; TODO:  need to have a custom callback
+; TIMER - core/async?
+; CHANNEL - for tweets?
+; how to connect the twitter stream callback handler (message complete) to the websocket??
+
+
 
 
 
