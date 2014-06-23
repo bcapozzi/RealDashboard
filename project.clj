@@ -13,5 +13,6 @@
                  [http.async.client "0.5.2"]
                  [twitter-streaming-client "0.3.1"]
                  [twitter-api "0.7.5"]]
-  
+
+  :jvm-opts ["-Dline.separator=\"\n\""]
   :main real-dashboard.core )
