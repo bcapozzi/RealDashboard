@@ -11,3 +11,4 @@ pom.xml.asc
 .classpath
 .project
 .settings
+credentials.txt

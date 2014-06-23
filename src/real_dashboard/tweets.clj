@@ -11,10 +11,10 @@
     (twitter.callbacks.protocols AsyncStreamingCallback))
   )
 
-(def my-creds (make-oauth-creds "CfcaHu2A3SqJjIpeK7uKDQ"
-                                "gKVfUfd5xe7YoKjb3DQ81YoBH0Qucad0xAHM2Y2v4"
-                                "220420269-y3JCfzcGuxL5K25fMwQayUPMnysvgxCkItBr3Gw0"
-                                "DXWw7KEPvRl9wAdc3e1gmdVsz6K9QkPhDaanxVro"))
+(def my-creds make-oauth-creds *app-consumer-key*
+  *app-consumer-secret*
+  *user-access-token*
+  *user-access-token-secret*)
 
 (defstruct msgbuff :msg :count)
 
